@@ -65,13 +65,18 @@
             <ul class="nav">
                                                                     <li class="divider-vertical"></li>
                                               <li >
-                    <a href="http://www.renewjoy.org/category/xin-qing-bo-ke.html">
-						<i class="icon-folder-open icon-large"></i>心情博客
+                    <a href="http://www.renewjoy.org/category/san-xie-cao.html">
+						<i class="icon-folder-open icon-large"></i>三叶草
 					</a>
                   </li>
                                 <li >
-                    <a href="http://www.renewjoy.org/category/xin-qing-ji-lu.html">
-						<i class="icon-folder-open icon-large"></i>心情记录
+                    <a href="http://www.renewjoy.org/category/ba-gua-gan-kun-zhi-dao.html">
+						<i class="icon-folder-open icon-large"></i>八卦乾坤之道
+					</a>
+                  </li>
+                                <li >
+                    <a href="http://www.renewjoy.org/category/ji-zhu-lu-xian-yu-xue-fo-zhi-lu.html">
+						<i class="icon-folder-open icon-large"></i>技术路线与学佛之路
 					</a>
                   </li>
                                 <li class="active">
@@ -82,11 +87,6 @@
                                 <li >
                     <a href="http://www.renewjoy.org/category/shi-qing-hua-yi.html">
 						<i class="icon-folder-open icon-large"></i>诗情画意
-					</a>
-                  </li>
-                                <li >
-                    <a href="http://www.renewjoy.org/category/shi-ci.html">
-						<i class="icon-folder-open icon-large"></i>诗词
 					</a>
                   </li>
               
@@ -142,18 +142,24 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
 <p>测试是在虚拟机里面进行的，用的bt4-bata版本。</p>
 <p>我不是为了破解无线网络才去研究bt4的，只是因为了解bt4集成了大量（据说&gt;300种）penetration testing tools才去下载的。后来就随便研究了下无线网的破解。</p>
 <p>无线网络的破解你需要什么呢？
-1. 一张无线网卡，机子集成的或者usb，最重要的是芯片要支持aircrack-ng工具集，然后就是最好能默认支持bt4，支持aircrack-ng和支持bt4是两个概念，前者为能破解，后者为bt4能识别。如果默认驱动不支持，那就看你的Linux水平了，唉，我还不够，所以在网上查了好久才决定去弄tp-wn322g+的型号。
-2. 最好能有一个Linux系统，版本不限，据说在windows下相对要麻烦很多（还没有测试过）。因为aircrack-ng这个要能运行的话，可能你的网卡需要另外的驱动。</p>
+1. 一张无线网卡，机子集成的或者usb，最重要的是芯片要支持aircrack-ng工具集，然后就是最好能默认支持bt4，支持aircrack-ng和支持bt4是两个概念，前者为能破解，后者为bt4能识别。如果默认驱动不支持，那就看你的Linux水平了，唉，我还不够，所以在网上查了好久才决定去弄tp-wn322g+的型号。</p>
+<ol class="arabic simple" start="2">
+<li>最好能有一个Linux系统，版本不限，据说在windows下相对要麻烦很多（还没有测试过）。因为aircrack-ng这个要能运行的话，可能你的网卡需要另外的驱动。</li>
+</ol>
 <p>呵呵，很多人都只知道bt4是破解无线网络的，其实要分清楚概念哈：
-1. 破解无线网络不是bt4的专利。
-2. bt4破解无线网络只是因为它集成了aricrack-ng工具集，而且他的强大也不表现在此。因为bt4是为渗透测试和取证专用版本，它集成了大量的工具而已。当然在无线这块，他的优势就是集成了大量的无线网卡驱动。</p>
+1. 破解无线网络不是bt4的专利。</p>
+<ol class="arabic simple" start="2">
+<li>bt4破解无线网络只是因为它集成了aricrack-ng工具集，而且他的强大也不表现在此。因为bt4是为渗透测试和取证专用版本，它集成了大量的工具而已。当然在无线这块，他的优势就是集成了大量的无线网卡驱动。</li>
+</ol>
 <p>我目前的总结：
-1. 破解wep的时候的时候，难点在于能否快速抓取大量的包。当包到一定量的时候，破解只是瞬间的事。而如果不采取arpRequest注入的话，可能抓取到能破解包的时间会以天来算。
-2. 破解wpa/wpa2的话，最重要的就是能抓取到4-way handshakes，我测试还没有成功（或许距离太远，或许……原因不明）。而抓取后，能否破解就取决于你字典的大小了。或者你有wpa的rainbow tables，呵呵，网上有33.4G的，我目前无法下载。
-3. 不要相信很多人的文章，第一说不清楚过程，第二讲不明白道理，自己也是道听途说，最重要的文档就是aricrack-ng的官方文档，花点时间看看，很值得。
-4. 其实抓包过程是漫长的，建议好好去官网看看aireplay-ng的9种模式的文档，慢慢研究，这样收获很大。
-5. spoonwep2/spoonwpa只是aricrack-ng工具集的非常丑陋的图形界面，用好aircrack-ng这个命令行工具才最重要。
-6. 想速成”蹭网“的人，建议打消念头哈。</p>
+1. 破解wep的时候的时候，难点在于能否快速抓取大量的包。当包到一定量的时候，破解只是瞬间的事。而如果不采取arpRequest注入的话，可能抓取到能破解包的时间会以天来算。</p>
+<ol class="arabic simple" start="2">
+<li>破解wpa/wpa2的话，最重要的就是能抓取到4-way handshakes，我测试还没有成功（或许距离太远，或许……原因不明）。而抓取后，能否破解就取决于你字典的大小了。或者你有wpa的rainbow tables，呵呵，网上有33.4G的，我目前无法下载。</li>
+<li>不要相信很多人的文章，第一说不清楚过程，第二讲不明白道理，自己也是道听途说，最重要的文档就是aricrack-ng的官方文档，花点时间看看，很值得。</li>
+<li>其实抓包过程是漫长的，建议好好去官网看看aireplay-ng的9种模式的文档，慢慢研究，这样收获很大。</li>
+<li>spoonwep2/spoonwpa只是aricrack-ng工具集的非常丑陋的图形界面，用好aircrack-ng这个命令行工具才最重要。</li>
+<li>想速成”蹭网“的人，建议打消念头哈。</li>
+</ol>
 <p>我的感觉是：
 第0 : 了解无线网络常用术语，配置Linux环境，或许你需要一定时间。</p>
 <p>第一: 让Linux系统支持识别你的网卡，或许你需要一定时间。</p>
@@ -188,23 +194,30 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
                 <div class="span3 well sidebar-nav" id="sidebar">
             <ul class="nav nav-list">
 <li class="nav-header"><h4><i class="icon-external-link"></i>blogroll</h4></li>
-    <li><a href="http://getpelican.com/"><i class="icon-external-link"></i>Pelican</a></li>
-    <li><a href="http://python.org/"><i class="icon-external-link"></i>Python.org</a></li>
-    <li><a href="http://jinja.pocoo.org/"><i class="icon-external-link"></i>Jinja2</a></li>
+    <li><a href="http://www.huzheng.org"><i class="icon-external-link"></i>功德藏菩萨</a></li>
+    <li><a href="http://zhzhxtrrk.github.com"><i class="icon-external-link"></i>城市流浪猫</a></li>
+    <li><a href="http://lx.shellcodes.org"><i class="icon-external-link"></i>乱雪</a></li>
+    <li><a href="http://www.knownsec.com"><i class="icon-external-link"></i>知道创宇</a></li>
+    <li><a href="http://www.jiasule.com"><i class="icon-external-link"></i>加速乐</a></li>
 <li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
 <li><a href="http://www.renewjoy.org/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
-    <li><a href="微博"><i class="icon-http://t.qq.com/oyea9le-sign icon-large"></i>http://t.qq.com/oyea9le</a></li>
-    <li><a href="#"><i class="icon-Another social link-sign icon-large"></i>Another social link</a></li>
+    <li><a href="http://t.qq.com/oyea9le"><i class="icon-微博-sign icon-large"></i>微博</a></li>
+    <li><a href="http://github.com/renewjoy"><i class="icon-github-sign icon-large"></i>github</a></li>
 
 <li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
 <li>
-<a href="http://www.renewjoy.org/category/xin-qing-bo-ke.html">
-    <i class="icon-folder-open icon-large"></i>心情博客
+<a href="http://www.renewjoy.org/category/san-xie-cao.html">
+    <i class="icon-folder-open icon-large"></i>三叶草
 </a>
 </li>
 <li>
-<a href="http://www.renewjoy.org/category/xin-qing-ji-lu.html">
-    <i class="icon-folder-open icon-large"></i>心情记录
+<a href="http://www.renewjoy.org/category/ba-gua-gan-kun-zhi-dao.html">
+    <i class="icon-folder-open icon-large"></i>八卦乾坤之道
+</a>
+</li>
+<li>
+<a href="http://www.renewjoy.org/category/ji-zhu-lu-xian-yu-xue-fo-zhi-lu.html">
+    <i class="icon-folder-open icon-large"></i>技术路线与学佛之路
 </a>
 </li>
 <li>
@@ -217,11 +230,6 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
     <i class="icon-folder-open icon-large"></i>诗情画意
 </a>
 </li>
-<li>
-<a href="http://www.renewjoy.org/category/shi-ci.html">
-    <i class="icon-folder-open icon-large"></i>诗词
-</a>
-</li>
 
 <li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
 <li class="tag-4">
@@ -229,9 +237,24 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
         <i class="icon-tag icon-large"></i>仓央嘉措
     </a>
 </li>
-<li class="tag-1">
-    <a href="http://www.renewjoy.org/tag/wireless.html">
-        <i class="icon-tag icon-large"></i>wireless
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/yin-guo.html">
+        <i class="icon-tag icon-large"></i>因果
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/da-shu-ju.html">
+        <i class="icon-tag icon-large"></i>大数据
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/rails.html">
+        <i class="icon-tag icon-large"></i>rails
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/gtk.html">
+        <i class="icon-tag icon-large"></i>gtk
     </a>
 </li>
 <li class="tag-4">
@@ -240,13 +263,18 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
     </a>
 </li>
 <li class="tag-4">
-    <a href="http://www.renewjoy.org/tag/gu-su.html">
-        <i class="icon-tag icon-large"></i>姑苏
+    <a href="http://www.renewjoy.org/tag/bigdata.html">
+        <i class="icon-tag icon-large"></i>bigdata
     </a>
 </li>
 <li class="tag-4">
-    <a href="http://www.renewjoy.org/tag/qing-cheng-shan.html">
-        <i class="icon-tag icon-large"></i>青城山
+    <a href="http://www.renewjoy.org/tag/kun-gua.html">
+        <i class="icon-tag icon-large"></i>坤卦
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/shu-ju-fen-xi.html">
+        <i class="icon-tag icon-large"></i>数据分析
     </a>
 </li>
 <li class="tag-4">
@@ -255,8 +283,43 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
     </a>
 </li>
 <li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/qing-cheng-shan.html">
+        <i class="icon-tag icon-large"></i>青城山
+    </a>
+</li>
+<li class="tag-2">
+    <a href="http://www.renewjoy.org/tag/wordjoy.html">
+        <i class="icon-tag icon-large"></i>wordjoy
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/python.html">
+        <i class="icon-tag icon-large"></i>python
+    </a>
+</li>
+<li class="tag-2">
+    <a href="http://www.renewjoy.org/tag/ba-gua.html">
+        <i class="icon-tag icon-large"></i>八卦
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/zhe-xue.html">
+        <i class="icon-tag icon-large"></i>哲学
+    </a>
+</li>
+<li class="tag-4">
     <a href="http://www.renewjoy.org/tag/shan-e.html">
         <i class="icon-tag icon-large"></i>善恶
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/cheng-shi-liu-lang-mao.html">
+        <i class="icon-tag icon-large"></i>城市流浪猫
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/oyea9le.html">
+        <i class="icon-tag icon-large"></i>oyea9le
     </a>
 </li>
 <li class="tag-4">
@@ -264,19 +327,69 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
         <i class="icon-tag icon-large"></i>功过
     </a>
 </li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/linux.html">
+        <i class="icon-tag icon-large"></i>Linux
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/qiu-zhi.html">
+        <i class="icon-tag icon-large"></i>求职
+    </a>
+</li>
+<li class="tag-2">
+    <a href="http://www.renewjoy.org/tag/fo-fa.html">
+        <i class="icon-tag icon-large"></i>佛法
+    </a>
+</li>
 <li class="tag-1">
+    <a href="http://www.renewjoy.org/tag/tai-ji.html">
+        <i class="icon-tag icon-large"></i>太极
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/hei-ke.html">
+        <i class="icon-tag icon-large"></i>黑客
+    </a>
+</li>
+<li class="tag-2">
+    <a href="http://www.renewjoy.org/tag/wireless.html">
+        <i class="icon-tag icon-large"></i>wireless
+    </a>
+</li>
+<li class="tag-2">
     <a href="http://www.renewjoy.org/tag/clover.html">
         <i class="icon-tag icon-large"></i>clover
     </a>
 </li>
-<li class="tag-1">
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/joy.html">
+        <i class="icon-tag icon-large"></i>joy
+    </a>
+</li>
+<li class="tag-2">
     <a href="http://www.renewjoy.org/tag/crack.html">
         <i class="icon-tag icon-large"></i>crack
     </a>
 </li>
 <li class="tag-4">
-    <a href="http://www.renewjoy.org/tag/yin-guo.html">
-        <i class="icon-tag icon-large"></i>因果
+    <a href="http://www.renewjoy.org/tag/gu-su.html">
+        <i class="icon-tag icon-large"></i>姑苏
+    </a>
+</li>
+<li class="tag-1">
+    <a href="http://www.renewjoy.org/tag/tao-yuan.html">
+        <i class="icon-tag icon-large"></i>桃源
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/huzheng.html">
+        <i class="icon-tag icon-large"></i>huzheng
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://www.renewjoy.org/tag/yi-jing.html">
+        <i class="icon-tag icon-large"></i>易经
     </a>
 </li>
 

