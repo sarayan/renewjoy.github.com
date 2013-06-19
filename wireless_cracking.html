@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+        
+        <title>大数据算命阁</title>
+        <meta charset="utf-8" />
+                <link href="http://www.renewjoy.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="大数据算命阁 Full Atom Feed" />
+                                                <link href="http://www.renewjoy.org/feeds/wan-yi.atom.xml" type="application/atom+xml" rel="alternate" title="大数据算命阁 Categories Atom Feed" />
+                                
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.renewjoy.org/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.renewjoy.org/theme/style.css" />
+
+        <script src="http://www.renewjoy.org/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+          
+
+
+
+        </head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.renewjoy.org">大数据算命阁 <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.renewjoy.org">Home</a></li>
+
+                                                  
+              </ul>
+            </div>
+
+          <section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.renewjoy.org/wireless_cracking.html" rel="bookmark"
+                   title="Permalink to wireless cracking">wireless cracking</a></h2>
+                      
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2010-05-27T21:10:00">
+                Thu 27 May 2010
+              </abbr>
+                            <address class="vcard author">
+                By <a class="url fn" href="http://www.renewjoy.org/author/renewjoy.html">renewjoy</a>
+              </address>
+                          </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>因为接触上bt4后，开始了对wireless cracking有点兴趣了。</p>
+<p>最近搞了张TP-WN322G+ v1.0 的USB无线网卡（曲折的过程啊，汗）</p>
+<!-- source-block: bash
+
+root@bt:~/dormitory# lsusb
+Bus 002 Device 004: ID 0ace:1215 ZyDAS WLA-54L WiFi -->
+<p>在经过多次的尝试后，终于小有成功。</p>
+<p>测试是在虚拟机里面进行的，用的bt4-bata版本。</p>
+<p>我不是为了破解无线网络才去研究bt4的，只是因为了解bt4集成了大量（据说&gt;300种）penetration testing tools才去下载的。后来就随便研究了下无线网的破解。</p>
+<p>无线网络的破解你需要什么呢？
+1. 一张无线网卡，机子集成的或者usb，最重要的是芯片要支持aircrack-ng工具集，然后就是最好能默认支持bt4，支持aircrack-ng和支持bt4是两个概念，前者为能破解，后者为bt4能识别。如果默认驱动不支持，那就看你的Linux水平了，唉，我还不够，所以在网上查了好久才决定去弄tp-wn322g+的型号。
+2. 最好能有一个Linux系统，版本不限，据说在windows下相对要麻烦很多（还没有测试过）。因为aircrack-ng这个要能运行的话，可能你的网卡需要另外的驱动。</p>
+<p>呵呵，很多人都只知道bt4是破解无线网络的，其实要分清楚概念哈：
+1. 破解无线网络不是bt4的专利。
+2. bt4破解无线网络只是因为它集成了aricrack-ng工具集，而且他的强大也不表现在此。因为bt4是为渗透测试和取证专用版本，它集成了大量的工具而已。当然在无线这块，他的优势就是集成了大量的无线网卡驱动。</p>
+<p>我目前的总结：
+1. 破解wep的时候的时候，难点在于能否快速抓取大量的包。当包到一定量的时候，破解只是瞬间的事。而如果不采取arpRequest注入的话，可能抓取到能破解包的时间会以天来算。
+2. 破解wpa/wpa2的话，最重要的就是能抓取到4-way handshakes，我测试还没有成功（或许距离太远，或许……原因不明）。而抓取后，能否破解就取决于你字典的大小了。或者你有wpa的rainbow tables，呵呵，网上有33.4G的，我目前无法下载。
+3. 不要相信很多人的文章，第一说不清楚过程，第二讲不明白道理，自己也是道听途说，最重要的文档就是aricrack-ng的官方文档，花点时间看看，很值得。
+4. 其实抓包过程是漫长的，建议好好去官网看看aireplay-ng的9种模式的文档，慢慢研究，这样收获很大。
+5. spoonwep2/spoonwpa只是aricrack-ng工具集的非常丑陋的图形界面，用好aircrack-ng这个命令行工具才最重要。
+6. 想速成”蹭网“的人，建议打消念头哈。</p>
+<p>我的感觉是：
+第0 : 了解无线网络常用术语，配置Linux环境，或许你需要一定时间。</p>
+<p>第一: 让Linux系统支持识别你的网卡，或许你需要一定时间。</p>
+<p>第二：让你的网卡能开始moniter模式，或许你需要一定的时间。</p>
+<p>第三：从会使用aircrack-ng到成功破解第一个wireless, 或许你需要一定时间。</p>
+<p>第四：你运气不错，一路没有阻挡直到破解成功。恭喜，你可以去看看aircrack-ng文档了，因为你会遇到更多的问题。</p>
+<p>这个过程下来，少则一周，多则不限，因此要有心理准备。</p>
+<ol class="arabic simple" start="7">
+<li>其实你用张强点的无线网卡搜索一下，ENC为OPN的还不少哈。</li>
+</ol>
+<p>初学wireless cracking,让高手见笑了。</p>
+
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+     <div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+            </ul>
+
+<h4>Categories</h4>
+<ul>
+			<li><a href="http://www.renewjoy.org/category/xin-qing-bo-ke.html">心情博客</a></li>
+			<li><a href="http://www.renewjoy.org/category/xin-qing-ji-lu.html">心情记录</a></li>
+			<li><a href="http://www.renewjoy.org/category/wan-yi.html">玩意</a></li>
+			<li><a href="http://www.renewjoy.org/category/shi-qing-hua-yi.html">诗情画意</a></li>
+			<li><a href="http://www.renewjoy.org/category/shi-ci.html">诗词</a></li>
+	</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/善恶.html">善恶</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/功过.html">功过</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/因果.html">因果</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/clover.html">clover</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/姑苏.html">姑苏</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/crack.html">crack</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/青城山.html">青城山</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/wireless.html">wireless</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/失明.html">失明</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/仓央嘉措.html">仓央嘉措</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/佛.html">佛</a></li>
+	</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+      <li><a href="微博">http://t.qq.com/oyea9le</a></li>
+      <li><a href="Another social link">#</a></li>
+    </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.renewjoy.org/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.renewjoy.org/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.renewjoy.org/theme/js/plugins.js"></script>
+
+</body>
+</html>

