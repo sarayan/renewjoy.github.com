@@ -1,5 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>大数据算命阁</title><link href="http://www.renewjoy.org/" rel="alternate"></link><link href="http://www.renewjoy.org/feeds/all.atom.xml" rel="self"></link><id>http://www.renewjoy.org/</id><updated>2012-12-01T21:10:00+01:00</updated><entry><title>三、龙战于野</title><link href="http://www.renewjoy.org/qian-kun-and-hack-defence-3.html" rel="alternate"></link><updated>2012-12-01T21:10:00+01:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2012-12-01:qian-kun-and-hack-defence-3.html</id><summary type="html">&lt;p&gt;坤卦的第一爻初六，爻辞为:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>大数据算命阁</title><link href="http://www.renewjoy.org/" rel="alternate"></link><link href="http://www.renewjoy.org/feeds/all.atom.xml" rel="self"></link><id>http://www.renewjoy.org/</id><updated>2013-06-22T14:58:22+02:00</updated><entry><title>emacs整行移动及bug修复</title><link href="http://www.renewjoy.org/emacs-move-line-fix-bug.html" rel="alternate"></link><updated>2013-06-22T14:58:22+02:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2013-06-22:emacs-move-line-fix-bug.html</id><summary type="html">&lt;p&gt;用了这么多年的emacs, 很早以前就从网上copy过来一个整行移动配置，非常好用，然后一直就这么用着，中途发现过非常怪异的bug，在某种情况下，移动后光标会乱跳，但一直没有详细研究这个bug是怎么产生的。&lt;/p&gt;
+&lt;p&gt;今日终于鼓足勇气，来详细研究一番，终于成功再现bug并修复，特此把这个过程发出来。&lt;/p&gt;
+&lt;p&gt;先上网上copy的配置文件(切勿复制这个，请复制后面修复bug的版本)：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-down&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&amp;amp;optional&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Move current line N (1) lines up/down leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;when&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;setq&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nv"&gt;col&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;current-column&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;beginning-of-line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;next-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;transpose-lines&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c1"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;previous-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;forward-char&lt;/span&gt; &lt;span class="nv"&gt;col&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line-up&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Moves current line N (1) lines up leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;-1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line-down&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Moves current line N (1) lines down leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;为了要理解这个功能，我可下了番功夫，因为开始对elisp并不了解。&lt;/p&gt;
+&lt;p&gt;前两行是emacs的键绑定：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-down&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这个绑定，让我们可以使用快捷键Alt-P/Alt-N来将本行向上移动/向下移动，分别调用move-line-up和move-line-down函数&lt;/p&gt;
+&lt;p&gt;defun定义函数，move-line-up/move-line-down/move-line为函数名(注意：函数名里面支持使用-符号), 后面跟着的()是参数列表，&amp;amp;optional表示参数的特点是可选。&lt;/p&gt;
+&lt;p&gt;(interactive &amp;quot;p&amp;quot;) 的作用是告诉emacs, 要求emacs解析你输入的Ctrl-u 数字或者Alt-数字作为函数的参数，因此这个地方的参数n支持一次移动几行，默认为1行&lt;/p&gt;
+&lt;p&gt;when表示条件，null是测试n是否为空，setq设置n的值为1&lt;/p&gt;
+&lt;p&gt;下面这一行是重点1：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nv"&gt;col&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;current-column&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这一行的作用，就是设置一个局部变量col，使他的值为当前光标所在的当前列(current-column), 这个和后面的bug有关。&lt;/p&gt;
+&lt;p&gt;接下来的几行，就是核心的整行移动功能：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;beginning-of-line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;next-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;transpose-lines&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c1"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;previous-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;forward-char&lt;/span&gt; &lt;span class="nv"&gt;col&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;beginning-of-line 使光标移动到行首，默认的快捷键为C-a&lt;/p&gt;
+&lt;p&gt;next-line 1 使光标移动到下一行(参数为1), 默认绑定的快捷键为C-n&lt;/p&gt;
+&lt;p&gt;transpose-lines  这是重点2, 他的功能是：  交换光标行和前一行，然后使用光标向下移动一行,    默认绑定的快捷键为C-x C-t&lt;/p&gt;
+&lt;p&gt;previous-line 1 使光标向上移动一行(参数为1),  即默认绑定的快捷键为C-p&lt;/p&gt;
+&lt;p&gt;forward-char col 这是重点3, 他的功能是使用光标向前移动col个字符， 默认绑定的快捷键为C-f&lt;/p&gt;
+&lt;p&gt;整行移动的核心功能在上面的重点2, transpose-lines， 这一行代码执行真正的交换两行操作， 剩下其它的就是光标的移动了，光标移动的目的是为了还原光标到原来的位置。&lt;/p&gt;
+&lt;p&gt;上面的光标移动对初学elisp来说，还是比较复杂的，我是调试与研究了很久才弄清楚这个过程。&lt;/p&gt;
+&lt;p&gt;假定现有3行文本:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+This is the line 1
+This is the line 2, and cur is here
+This is the line 3
+&lt;/pre&gt;
+&lt;p&gt;我们的任务是将第二行向上移动一行(相当于交换第一行和第二行)，当前光标停留在第二行的cur中的c字母上, 按下Alt-p，调用函数move-line-up，函数执行中，光标的移动如下:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+This is the line 1
+[beginning-of-line:光标2][previous-line:光标5]This is the line 2, and c``[current:光标1][forward-char:光标6]``ur is here
+[transpose-lines:光标4]This is the line 3
+&lt;/pre&gt;
+&lt;p&gt;光标最开始在1, 移动完成后回到6, 光标1与6是同一位置，达到了我们的目的， 也是函数的正常功能。&lt;/p&gt;
+&lt;p&gt;下面说这个功能的bug， bug表现的现象：当需要移动的行的光标前面有中文的时候，会出现行移动后，光标不在原来的位置，后向后移动几个，当中文字符多的时候，光标甚至会移动到下一行:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+This is the line 1
+This is the line 2, 这里面有大量的中文，而且光标在包含中文字符之后, and cur is here
+This is the line 3
+This is the line 4
+This is the line 5
+This is the line 6
+&lt;/pre&gt;
+&lt;p&gt;当执行Alt-p的之后，光标不是停留在行This is the line 2中的cur中的c上，而是跑到行This is the line 1中的the后面去了。&lt;/p&gt;
+&lt;p&gt;为了验证, 通过调试，我们发现：函数current-column的返回值为72,即col为72, 这是上面说的重点1那行的功能。&lt;/p&gt;
+&lt;p&gt;如果手动在第二行的最开始，输入C-u 72 C-f, 那么光标就会跳到行: This is the line 1中的the后面，与实际运行的效果一样。&lt;/p&gt;
+&lt;p&gt;C-u 72 C-f这个实现的是上面说的重点3的功能：forward-char col (col为72), 所以bug就出现在这个地方。&lt;/p&gt;
+&lt;p&gt;在研究函数current-column的时候，找到文档：&lt;a class="reference external" href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Columns.html"&gt;http://www.gnu.org/software/emacs/manual/html_node/elisp/Columns.html&lt;/a&gt;， 发现提供一个命令:move-to-column column， 把上面重点3的forward-char col替换为这个move-to-column，bug消失。&lt;/p&gt;
+&lt;p&gt;现在回过来看bug产生的原因，current-column获取有中文字符的位置时，一个中文字符会占两个位置, 而英文字符只占一个位置，所以在全是英文的情况下不会有bug。&lt;/p&gt;
+&lt;p&gt;但forward-char在遇到中文字符的时候，还是当成一个字符来算的，比如forward-char 5,遇到中文的话，就会前进5个中文，这就导致了前面获取的col的值，如果遇到中文的话，再前进这么多的col时，会往前走，甚至会到下一行的原因。&lt;/p&gt;
+&lt;p&gt;而命令move-to-column与current-column是一样的，遇到中文都是当成2个来看，所以bug解决。&lt;/p&gt;
+&lt;p&gt;最后，修复后的配置如下:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-down&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&amp;amp;optional&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Move current line N (1) lines up/down leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;when&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;setq&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nv"&gt;col&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;current-column&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;beginning-of-line&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;next-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;transpose-lines&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="c1"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;previous-line&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;move-to-column&lt;/span&gt; &lt;span class="nv"&gt;col&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line-up&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Moves current line N (1) lines up leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;-1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;defun&lt;/span&gt; &lt;span class="nv"&gt;move-line-down&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="s"&gt;&amp;quot;Moves current line N (1) lines down leaving point in place.&amp;quot;&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;interactive&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;p&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;move-line&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;null&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+</summary><category term="emacs"></category><category term="elisp"></category><category term="bug"></category></entry><entry><title>三、龙战于野</title><link href="http://www.renewjoy.org/qian-kun-and-hack-defence-3.html" rel="alternate"></link><updated>2012-12-01T21:10:00+01:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2012-12-01:qian-kun-and-hack-defence-3.html</id><summary type="html">&lt;p&gt;坤卦的第一爻初六，爻辞为:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 履霜，坚冰至。
 &lt;/pre&gt;
@@ -38,13 +147,17 @@
 </summary><category term="太极"></category><category term="坤卦"></category></entry><entry><title>二、飞龙在天</title><link href="http://www.renewjoy.org/qian-kun-and-hack-defence-2.html" rel="alternate"></link><updated>2012-11-26T21:10:00+01:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2012-11-26:qian-kun-and-hack-defence-2.html</id><summary type="html">&lt;p&gt;是时候还看看乾卦的真实面目了，上面讲过，最初的八卦，每卦只有三爻，但我们现在说的是演变的六十四卦，每卦为六爻。&lt;/p&gt;
 &lt;p&gt;乾卦的第一爻，初九，爻辞为:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-潜龙勿用。潜龙
+潜龙勿用。
 &lt;/pre&gt;
-&lt;p&gt;喻为人之刚入世间，亦可喻之为刚入职场的新人。潜，即潜藏，不露出自己的真实能力，即使自己很有能力，也要先潜藏自己，观察周围的环境，不断的学习与融入新的环境。&lt;/p&gt;
+&lt;p&gt;潜龙喻为人之刚入世间，亦可喻之为刚入职场的新人。潜，即潜藏，不露出自己的真实能力，即使自己很有能力，也要先潜藏自己，观察周围的环境，不断的学习与融入新的环境。&lt;/p&gt;
 &lt;p&gt;龙为传说中的最厉害的生命，而龙在真实的世界主要负责翻译佛经，最初的梵文佛经即为龙由龙文翻译过来的，现在佛经最完整的也收藏在龙宫，龙宫里面有无量的房间，里面全是佛经。&lt;/p&gt;
 &lt;p&gt;像龙这么能力强大的生命，在最初阶段都还得潜藏起来，而况于人乎？&lt;/p&gt;
 &lt;p&gt;因此，乾卦的一个宗旨就是要潜。但是不是就一点也不能展现自己的能力呢？潜龙勿用，“勿”是不是不要呢？“勿”其实是有要的意思，但是一般的情况下是不要，在可用的时候就小用一下，这个阶段主要是为了做准备。潜起来的目的就是为了以后能更好的展现自己，不为了展现自己，那还潜起来干什么呢？反正也没有人知道你。因此，“勿”就是目前不用，或者小用，更好的是做准备。&lt;/p&gt;
-&lt;p&gt;做好了准备，我们就要开始展现自己，此时，我们步入了乾卦的九二爻，爻辞为：见龙在田，利见大人。见，通现，即展现。此时的龙已经展现自己在田野，我们也开始步入社会了，开始与人接触，相互之间有利益关系了，也是开始自己事业的时候了。如新人之入职场，也步入了工作的正常轨道，开始为公司创造利益了。&lt;/p&gt;
+&lt;p&gt;做好了准备，我们就要开始展现自己，此时，我们步入了乾卦的九二爻，爻辞为:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+见龙在田，利见大人。
+&lt;/pre&gt;
+&lt;p&gt;见，通现，即展现。此时的龙已经展现自己在田野，我们也开始步入社会了，开始与人接触，相互之间有利益关系了，也是开始自己事业的时候了。如新人之入职场，也步入了工作的正常轨道，开始为公司创造利益了。&lt;/p&gt;
 &lt;p&gt;既然展现了自己，就必须要做些有益的事情，每个人都希望得到领导（大人）的赏识，谁为领导，谁为大人呢？这个会在后面再讲，大人，即为处于九五爻位置的人，九五至尊，得不到九五至尊之人的赏识，就不要表现自己，好好把事情做好。或许是你还潜藏得不够，还准备得不够。继续潜藏起来，认真做事，做好充分的知识积累。&lt;/p&gt;
 &lt;p&gt;如果你展现的时机合适，做事也很有分寸，也恰当得得到了大人的赏识，那就继续保持，继续努力。不断提高自己的能力，再往上走，步入到九三爻。&lt;/p&gt;
 &lt;p&gt;九三爻的爻辞:&lt;/p&gt;
