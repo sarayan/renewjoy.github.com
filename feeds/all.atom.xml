@@ -1,5 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>大数据算命阁</title><link href="http://www.renewjoy.org/" rel="alternate"></link><link href="http://www.renewjoy.org/feeds/all.atom.xml" rel="self"></link><id>http://www.renewjoy.org/</id><updated>2013-06-22T14:58:22+02:00</updated><entry><title>emacs整行移动及bug修复</title><link href="http://www.renewjoy.org/emacs-move-line-fix-bug.html" rel="alternate"></link><updated>2013-06-22T14:58:22+02:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2013-06-22:emacs-move-line-fix-bug.html</id><summary type="html">&lt;p&gt;用了这么多年的emacs, 很早以前就从网上copy过来一个整行移动配置，非常好用，然后一直就这么用着，中途发现过非常怪异的bug，在某种情况下，移动后光标会乱跳，但一直没有详细研究这个bug是怎么产生的。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>大数据算命阁</title><link href="http://www.renewjoy.org/" rel="alternate"></link><link href="http://www.renewjoy.org/feeds/all.atom.xml" rel="self"></link><id>http://www.renewjoy.org/</id><updated>2013-06-25T19:34:00+02:00</updated><entry><title>测试并行压缩算法(pigz/pbzip2)</title><link href="http://www.renewjoy.org/parallel-gzip-bzip2-test.html" rel="alternate"></link><updated>2013-06-25T19:34:00+02:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2013-06-25:parallel-gzip-bzip2-test.html</id><summary type="html">&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;测试环境&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;机器cpu：4*2.4&lt;/li&gt;
+&lt;li&gt;系统：   Ubuntu x64 12.04&lt;/li&gt;
+&lt;li&gt;测试文件：/data/logdev/file_20121103.0000-2400.log&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h2&gt;安装测试环境&lt;/h2&gt;
+&lt;div class="section" id="pbzip2"&gt;
+&lt;h3&gt;安装pbzip2&lt;/h3&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;sudo apt-get install pbzip2 安装的为1.1.6版本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install libbz2-dev
+tar xvf pbzip2-1.1.8.tar.gz
+&lt;span class="nb"&gt;cd &lt;/span&gt;pbzip2-1.1.8
+make
+sudo make install
+&lt;span class="nv"&gt;$ &lt;/span&gt;pbzip2 --version
+Parallel BZIP2 v1.1.8 - by: Jeff Gilchrist &lt;span class="sb"&gt;`&lt;/span&gt;http://compression.ca &amp;lt;http://compression.ca&amp;gt;&lt;span class="sb"&gt;`&lt;/span&gt;_
+&lt;span class="o"&gt;[&lt;/span&gt;Jun. 10, 2012&lt;span class="o"&gt;]&lt;/span&gt;               &lt;span class="o"&gt;(&lt;/span&gt;uses libbzip2 by Julian Seward&lt;span class="o"&gt;)&lt;/span&gt;
+Major contributions: Yavor Nikolov &amp;lt;nikolov.javor+pbzip2@gmail.com&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pigz"&gt;
+&lt;h3&gt;安装pigz&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;sudo apt-get install libzip-dev
+wget http://zlib.net/pigz/pigz-2.3.tar.gz
+make&lt;span class="o"&gt;(&lt;/span&gt;编译不成功）
+sudo apt-get install pigz
+&lt;span class="nv"&gt;$ &lt;/span&gt;pigz --version
+pigz 2.1.6
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id3"&gt;
+&lt;h2&gt;压缩比率对比&lt;/h2&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="17%" /&gt;
+&lt;col width="50%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;压缩类型&lt;/td&gt;
+&lt;td&gt;大小&lt;/td&gt;
+&lt;td&gt;比率&lt;/td&gt;
+&lt;td&gt;占未压缩的比例&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;未压缩&lt;/td&gt;
+&lt;td&gt;6.3G&lt;/td&gt;
+&lt;td&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;td&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;gz&lt;/td&gt;
+&lt;td&gt;876M&lt;/td&gt;
+&lt;td&gt;14%&lt;/td&gt;
+&lt;td&gt;大约：1/7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;pigz&lt;/td&gt;
+&lt;td&gt;878M&lt;/td&gt;
+&lt;td&gt;14%&lt;/td&gt;
+&lt;td&gt;大约：1/7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;513M&lt;/td&gt;
+&lt;td&gt;8%&lt;/td&gt;
+&lt;td&gt;大约：1/12&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;pbzip2&lt;/td&gt;
+&lt;td&gt;514M&lt;/td&gt;
+&lt;td&gt;8%&lt;/td&gt;
+&lt;td&gt;大约：1/12&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id4"&gt;
+&lt;h2&gt;压缩时间对比&lt;/h2&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="33%" /&gt;
+&lt;col width="33%" /&gt;
+&lt;col width="33%" /&gt;
+&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;压缩算法&lt;/td&gt;
+&lt;td&gt;压缩时间&lt;/td&gt;
+&lt;td&gt;解压时间&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;gz&lt;/td&gt;
+&lt;td&gt;3分25秒&lt;/td&gt;
+&lt;td&gt;1分13秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;pigz&lt;/td&gt;
+&lt;td&gt;1分12秒&lt;/td&gt;
+&lt;td&gt;1分19秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;bzip2&lt;/td&gt;
+&lt;td&gt;20分19秒&lt;/td&gt;
+&lt;td&gt;4分2秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;pbzip2&lt;/td&gt;
+&lt;td&gt;5分27秒&lt;/td&gt;
+&lt;td&gt;1分38秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id5"&gt;
+&lt;h2&gt;压缩时间详细记录&lt;/h2&gt;
+&lt;div class="section" id="gzip"&gt;
+&lt;h3&gt;gzip压缩时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;gzip file_20121103.0000-2400.log
+
+real 3m25.385s
+user 3m7.196s
+sys  0m4.644s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id6"&gt;
+&lt;h3&gt;gzip解压时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;gzip -d file_20121103.0000-2400.log.gz
+
+real 1m13.792s
+user 0m38.934s
+sys  0m4.916s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id7"&gt;
+&lt;h3&gt;pigz压缩时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;pigz -kv -p 4 file_20121103.0000-2400.log
+file_20121103.0000-2400.log to file_20121103.0000-2400.log.gz
+
+real 1m12.821s
+user 3m39.694s
+sys  0m5.116s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id8"&gt;
+&lt;h3&gt;pigz解压时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;pigz -kv -p 4 -d file_20121103.0000-2400.log.gz
+file_20121103.0000-2400.log.gz to file_20121103.0000-2400.log
+
+real 1m19.385s
+user 0m31.502s
+sys  0m7.952s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="bipz2"&gt;
+&lt;h3&gt;bipz2压缩时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;tar jcvf file_20121103.0000-2400.log.tar.bz2 file_20121103.0000-2400.log
+file_20121103.0000-2400.log
+
+real 20m19.407s
+user 19m59.467s
+sys  0m12.569s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="bzip"&gt;
+&lt;h3&gt;bzip解压时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;tar jxvf file_20121103.0000-2400.log.tar.bz2
+file_20121103.0000-2400.log
+
+real 4m2.894s
+user 3m53.915s
+sys  0m18.097s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id9"&gt;
+&lt;h3&gt;pbzip2压缩时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;pbzip2 -kv -p4 file_20121103.0000-2400.log
+Parallel BZIP2 v1.1.8 - by: Jeff Gilchrist &lt;span class="sb"&gt;`&lt;/span&gt;http://compression.ca &amp;lt;http://compression.ca&amp;gt;&lt;span class="sb"&gt;`&lt;/span&gt;_
+&lt;span class="o"&gt;[&lt;/span&gt;Jun. 10, 2012&lt;span class="o"&gt;]&lt;/span&gt;               &lt;span class="o"&gt;(&lt;/span&gt;uses libbzip2 by Julian Seward&lt;span class="o"&gt;)&lt;/span&gt;
+Major contributions: Yavor Nikolov &amp;lt;nikolov.javor+pbzip2@gmail.com&amp;gt;
+
+         &lt;span class="c"&gt;# CPUs: 4&lt;/span&gt;
+ BWT Block Size: 900 KB
+File Block Size: 900 KB
+ Maximum Memory: 100 MB
+-------------------------------------------
+         File &lt;span class="c"&gt;#: 1 of 1&lt;/span&gt;
+     Input Name: file_20121103.0000-2400.log
+    Output Name: file_20121103.0000-2400.log.bz2
+
+     Input Size: 6668079504 bytes
+Compressing data...
+    Output Size: 538135973 bytes
+-------------------------------------------
+
+     Wall Clock: 327.318437 seconds
+
+real 5m27.321s
+user 21m5.751s
+sys  0m27.066s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id10"&gt;
+&lt;h3&gt;pbzip2解压时间&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;time &lt;/span&gt;pbzip2 -kv -p4 -d file_20121103.0000-2400.log.bz2
+Parallel BZIP2 v1.1.8 - by: Jeff Gilchrist &lt;span class="sb"&gt;`&lt;/span&gt;http://compression.ca &amp;lt;http://compression.ca&amp;gt;&lt;span class="sb"&gt;`&lt;/span&gt;_
+&lt;span class="o"&gt;[&lt;/span&gt;Jun. 10, 2012&lt;span class="o"&gt;]&lt;/span&gt;               &lt;span class="o"&gt;(&lt;/span&gt;uses libbzip2 by Julian Seward&lt;span class="o"&gt;)&lt;/span&gt;
+Major contributions: Yavor Nikolov &amp;lt;nikolov.javor+pbzip2@gmail.com&amp;gt;
+
+         &lt;span class="c"&gt;# CPUs: 4&lt;/span&gt;
+ Maximum Memory: 100 MB
+ Ignore Trailing Garbage: off
+-------------------------------------------
+         File &lt;span class="c"&gt;#: 1 of 1&lt;/span&gt;
+     Input Name: file_20121103.0000-2400.log.bz2
+    Output Name: file_20121103.0000-2400.log
+
+ BWT Block Size: 900k
+     Input Size: 538135973 bytes
+Decompressing data...
+    Output Size: 6668079504 bytes
+-------------------------------------------
+
+     Wall Clock: 98.130081 seconds
+
+real 1m38.132s
+user 5m12.444s
+sys  0m19.689s
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary><category term="gz"></category><category term="bz2"></category><category term="bzip2"></category><category term="pigz"></category><category term="pbzip2"></category></entry><entry><title>emacs整行移动及bug修复</title><link href="http://www.renewjoy.org/emacs-move-line-fix-bug.html" rel="alternate"></link><updated>2013-06-22T14:58:22+02:00</updated><author><name>renewjoy</name></author><id>tag:www.renewjoy.org,2013-06-22:emacs-move-line-fix-bug.html</id><summary type="html">&lt;p&gt;用了这么多年的emacs, 很早以前就从网上copy过来一个整行移动配置，非常好用，然后一直就这么用着，中途发现过非常怪异的bug，在某种情况下，移动后光标会乱跳，但一直没有详细研究这个bug是怎么产生的。&lt;/p&gt;
 &lt;p&gt;今日终于鼓足勇气，来详细研究一番，终于成功再现bug并修复，特此把这个过程发出来。&lt;/p&gt;
 &lt;p&gt;先上网上copy的配置文件(切勿复制这个，请复制后面修复bug的版本)：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;global-set-key&lt;/span&gt; &lt;span class="nv"&gt;[&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;meta&lt;/span&gt; &lt;span class="nv"&gt;p&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nv"&gt;]&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;move-line-up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
